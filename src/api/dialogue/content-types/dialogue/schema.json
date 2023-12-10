@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "dialogues",
+  "info": {
+    "singularName": "dialogue",
+    "pluralName": "dialogues",
+    "displayName": "Dialogue",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subject": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "active",
+        "completed"
+      ]
+    },
+    "scenario": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::scenario.scenario",
+      "inversedBy": "dialogues"
+    },
+    "interactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::interaction.interaction",
+      "mappedBy": "dialogue"
+    },
+    "filters": {
+      "type": "dynamiczone",
+      "components": [
+        "filters.date-filter"
+      ]
+    },
+    "helpers": {
+      "type": "component",
+      "repeatable": false,
+      "component": "core.runner-helpers"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "profiles",
+  "info": {
+    "singularName": "profile",
+    "pluralName": "profiles",
+    "displayName": "Profile",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subject": {
+      "type": "string"
+    },
+    "path": {
+      "type": "uid",
+      "required": true,
+      "targetField": "subject"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Behavioural Patterns",
+        "Risk Assessment",
+        "Engagement Metrics",
+        "Communication Preferences",
+        "Social and Community Interaction",
+        "Transactional Data",
+        "Geographical and Demographic Data",
+        "Tech and Device Preferences",
+        "Feedback and Surveys",
+        "Regulatory and Compliance Data"
+      ]
+    },
+    "location": {
+      "type": "enumeration",
+      "enum": [
+        "Local",
+        "Global"
+      ]
+    },
+    "ownership": {
+      "type": "enumeration",
+      "enum": [
+        "System",
+        "Manager"
+      ]
+    },
+    "formulas": {
+      "type": "component",
+      "repeatable": true,
+      "component": "core.dynamic-value-calc"
+    },
+    "groupWIP": {
+      "type": "string"
+    }
+  }
+}

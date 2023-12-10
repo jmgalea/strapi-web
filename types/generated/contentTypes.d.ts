@@ -362,28 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiTestTest extends Schema.CollectionType {
-  collectionName: 'tests';
-  info: {
-    singularName: 'test';
-    pluralName: 'tests';
-    displayName: 'test';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    test: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::test.test', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -497,6 +475,50 @@ export interface PluginUploadFolder extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::upload.folder',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<{
+        min: 1;
+        max: 50;
+      }>;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
       'oneToOne',
       'admin::user'
     > &
@@ -638,6 +660,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    participant: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::participant.participant'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -655,43 +682,373 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
+export interface ApiDialogueDialogue extends Schema.CollectionType {
+  collectionName: 'dialogues';
   info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
+    singularName: 'dialogue';
+    pluralName: 'dialogues';
+    displayName: 'Dialogue';
     description: '';
   };
   options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
+    draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<{
-        min: 1;
-        max: 50;
-      }>;
-    code: Attribute.String & Attribute.Unique;
+    subject: Attribute.String;
+    status: Attribute.Enumeration<['pending', 'active', 'completed']>;
+    scenario: Attribute.Relation<
+      'api::dialogue.dialogue',
+      'manyToOne',
+      'api::scenario.scenario'
+    >;
+    interactions: Attribute.Relation<
+      'api::dialogue.dialogue',
+      'oneToMany',
+      'api::interaction.interaction'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::dialogue.dialogue',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::dialogue.dialogue',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiInteractionInteraction extends Schema.CollectionType {
+  collectionName: 'interactions';
+  info: {
+    singularName: 'interaction';
+    pluralName: 'interactions';
+    displayName: 'Interaction';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    subject: Attribute.String;
+    span: Attribute.Integer & Attribute.Required & Attribute.DefaultTo<1>;
+    dialogue: Attribute.Relation<
+      'api::interaction.interaction',
+      'manyToOne',
+      'api::dialogue.dialogue'
+    >;
+    progresses: Attribute.Relation<
+      'api::interaction.interaction',
+      'oneToMany',
+      'api::progress.progress'
+    >;
+    outcomes: Attribute.Relation<
+      'api::interaction.interaction',
+      'oneToMany',
+      'api::outcome.outcome'
+    >;
+    config: Attribute.JSON;
+    services: Attribute.DynamicZone<
+      ['core.dynamic-value-calc', 'profiles.generate-profile']
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::interaction.interaction',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::interaction.interaction',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiOutcomeOutcome extends Schema.CollectionType {
+  collectionName: 'outcomes';
+  info: {
+    singularName: 'outcome';
+    pluralName: 'outcomes';
+    displayName: 'Outcome';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    type: Attribute.String;
+    PROFILEMOVEMENTSwip: Attribute.String;
+    executionPath: Attribute.String;
+    interaction: Attribute.Relation<
+      'api::outcome.outcome',
+      'manyToOne',
+      'api::interaction.interaction'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::outcome.outcome',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::outcome.outcome',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiParticipantParticipant extends Schema.CollectionType {
+  collectionName: 'participants';
+  info: {
+    singularName: 'participant';
+    pluralName: 'participants';
+    displayName: 'Participant';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    subject: Attribute.String;
+    users_permissions_user: Attribute.Relation<
+      'api::participant.participant',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    scenarios: Attribute.Relation<
+      'api::participant.participant',
+      'oneToMany',
+      'api::scenario.scenario'
+    >;
+    participantId: Attribute.UID;
+    workflowId: Attribute.UID;
+    sessions: Attribute.Relation<
+      'api::participant.participant',
+      'oneToMany',
+      'api::session.session'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::participant.participant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::participant.participant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiProfileProfile extends Schema.CollectionType {
+  collectionName: 'profiles';
+  info: {
+    singularName: 'profile';
+    pluralName: 'profiles';
+    displayName: 'Profile';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    subject: Attribute.String;
+    path: Attribute.UID & Attribute.Required;
+    category: Attribute.Enumeration<
+      [
+        'Behavioural Patterns',
+        'Risk Assessment',
+        'Engagement Metrics',
+        'Communication Preferences',
+        'Social and Community Interaction',
+        'Transactional Data',
+        'Geographical and Demographic Data',
+        'Tech and Device Preferences',
+        'Feedback and Surveys',
+        'Regulatory and Compliance Data'
+      ]
+    >;
+    location: Attribute.Enumeration<['Local', 'Global']>;
+    ownership: Attribute.Enumeration<['System', 'Manager']>;
+    formulas: Attribute.Component<'core.dynamic-value-calc', true>;
+    groupWIP: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::profile.profile',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::profile.profile',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiProgressProgress extends Schema.CollectionType {
+  collectionName: 'progresses';
+  info: {
+    singularName: 'progress';
+    pluralName: 'progresses';
+    displayName: 'Progress';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    type: Attribute.String;
+    interaction: Attribute.Relation<
+      'api::progress.progress',
+      'manyToOne',
+      'api::interaction.interaction'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::progress.progress',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::progress.progress',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiScenarioScenario extends Schema.CollectionType {
+  collectionName: 'scenarios';
+  info: {
+    singularName: 'scenario';
+    pluralName: 'scenarios';
+    displayName: 'Scenario';
+    description: 'A collection of services to be run.';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    subject: Attribute.String;
+    status: Attribute.Enumeration<['pending', 'active', 'completed']>;
+    dialogues: Attribute.Relation<
+      'api::scenario.scenario',
+      'oneToMany',
+      'api::dialogue.dialogue'
+    >;
+    participant: Attribute.Relation<
+      'api::scenario.scenario',
+      'manyToOne',
+      'api::participant.participant'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::scenario.scenario',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::scenario.scenario',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSessionSession extends Schema.CollectionType {
+  collectionName: 'sessions';
+  info: {
+    singularName: 'session';
+    pluralName: 'sessions';
+    displayName: 'Session';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    subject: Attribute.String;
+    participant: Attribute.Relation<
+      'api::session.session',
+      'manyToOne',
+      'api::participant.participant'
+    >;
+    contextMETA: Attribute.JSON;
+    status: Attribute.Enumeration<['alive', 'terminated']>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::session.session',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::session.session',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTriggerTrigger extends Schema.CollectionType {
+  collectionName: 'triggers';
+  info: {
+    singularName: 'trigger';
+    pluralName: 'triggers';
+    displayName: 'Trigger';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    type: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::trigger.trigger',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::trigger.trigger',
       'oneToOne',
       'admin::user'
     > &
@@ -709,13 +1066,21 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::test.test': ApiTestTest;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
+      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::i18n.locale': PluginI18NLocale;
+      'api::dialogue.dialogue': ApiDialogueDialogue;
+      'api::interaction.interaction': ApiInteractionInteraction;
+      'api::outcome.outcome': ApiOutcomeOutcome;
+      'api::participant.participant': ApiParticipantParticipant;
+      'api::profile.profile': ApiProfileProfile;
+      'api::progress.progress': ApiProgressProgress;
+      'api::scenario.scenario': ApiScenarioScenario;
+      'api::session.session': ApiSessionSession;
+      'api::trigger.trigger': ApiTriggerTrigger;
     }
   }
 }

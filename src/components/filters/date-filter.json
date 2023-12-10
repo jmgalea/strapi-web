@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_filters_date_filters",
+  "info": {
+    "displayName": "Date Filter",
+    "icon": "clock",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "value1": {
+      "type": "enumeration",
+      "enum": [
+        "Now",
+        "... Trigger Values",
+        "... Profile Values"
+      ]
+    },
+    "operator": {
+      "type": "enumeration",
+      "enum": [
+        "Before",
+        "After"
+      ]
+    },
+    "value2": {
+      "type": "datetime"
+    }
+  }
+}

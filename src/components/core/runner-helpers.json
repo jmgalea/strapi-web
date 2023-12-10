@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_core_runner_helpers",
+  "info": {
+    "displayName": "RunnerHelpers",
+    "icon": "layer"
+  },
+  "options": {},
+  "attributes": {
+    "currentItemPosition": {
+      "type": "integer"
+    },
+    "totalItems": {
+      "type": "integer"
+    },
+    "isLast": {
+      "type": "boolean"
+    },
+    "nextSibling": {
+      "type": "integer"
+    }
+  }
+}
