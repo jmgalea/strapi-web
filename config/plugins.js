@@ -17,15 +17,15 @@ module.exports = ({ env }) => ({
         contentTypeFilter: {
           mode: 'allow',
           uids: {
-            'api::dialogue.dialogue': true,
-            'api::interaction.interaction': true,
-            'api::outcome.outcome': true,
-            'api::particpant.participant': true,
-            'api::profile.profile': true,
-            'api::progress.progress': true,
-            'api::scenario.scenario': true,
-            'api::session.session': true,
-            'api:trigger.trigger': true
+            'api::dialogue.dialogue': { 'GET':true, },
+            'api::interaction.interaction': { 'GET':true, },
+            'api::outcome.outcome': { 'GET':true, },
+            'api::particpant.participant': { 'GET':true, },
+            'api::profile.profile': { 'GET':true, },
+            'api::progress.progress': { 'GET':true, },
+            'api::scenario.scenario': { 'GET':true, },
+            'api::session.session': { 'GET':true, },
+            'api:trigger.trigger': { 'GET':true, }
             // 'api::category.category': {
             //   'GET':true,
             // }
