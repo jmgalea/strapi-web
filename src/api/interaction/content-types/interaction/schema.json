@@ -34,9 +34,6 @@
     "subject": {
       "type": "string"
     },
-    "subject3": {
-      "type": "string"
-    },
     "span": {
       "type": "integer",
       "default": 1,
