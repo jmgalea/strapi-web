@@ -34,7 +34,7 @@
     "subject": {
       "type": "string"
     },
-    "subject2": {
+    "subject3": {
       "type": "string"
     },
     "span": {
