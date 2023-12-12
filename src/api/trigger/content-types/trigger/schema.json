@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "triggers",
+  "info": {
+    "singularName": "trigger",
+    "pluralName": "triggers",
+    "displayName": "Trigger",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "type": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "uid",
+      "targetField": "type"
+    }
+  }
+}

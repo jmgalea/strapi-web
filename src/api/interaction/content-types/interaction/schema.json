@@ -1,0 +1,87 @@
+{
+  "kind": "collectionType",
+  "collectionName": "interactions",
+  "info": {
+    "singularName": "interaction",
+    "pluralName": "interactions",
+    "displayName": "Interaction",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "content-tags": {
+      "fieldName": "tags",
+      "tags": {
+        "None": {
+          "color": "neutral"
+        },
+        "Done": {
+          "color": "success"
+        },
+        "In progress": {
+          "color": "primary"
+        },
+        "Error": {
+          "color": "danger"
+        }
+      },
+      "defaultTag": "None"
+    }
+  },
+  "attributes": {
+    "subject": {
+      "type": "string"
+    },
+    "span": {
+      "type": "integer",
+      "default": 1,
+      "required": true
+    },
+    "dialogue": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::dialogue.dialogue",
+      "inversedBy": "interactions"
+    },
+    "progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::progress.progress",
+      "mappedBy": "interaction"
+    },
+    "outcomes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::outcome.outcome",
+      "mappedBy": "interaction"
+    },
+    "services": {
+      "type": "dynamiczone",
+      "components": [
+        "profiles.generate-profile"
+      ]
+    },
+    "filters": {
+      "type": "dynamiczone",
+      "components": [
+        "filters.date-filter"
+      ]
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "active",
+        "completed"
+      ],
+      "default": "pending"
+    },
+    "helpers": {
+      "type": "component",
+      "repeatable": false,
+      "component": "core.runner-helpers"
+    }
+  }
+}

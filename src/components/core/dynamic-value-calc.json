@@ -1,0 +1,57 @@
+{
+  "collectionName": "components_core_dynamic_value_calcs",
+  "info": {
+    "displayName": "DynamicValueCalc",
+    "icon": "apps",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "operator": {
+      "type": "enumeration",
+      "enum": [
+        "None",
+        "Plus",
+        "Minus",
+        "Multiply",
+        "Divide"
+      ],
+      "default": "Plus"
+    },
+    "profile": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::profile.profile"
+    },
+    "operatorCustomValue": {
+      "type": "enumeration",
+      "enum": [
+        "None",
+        "Plus",
+        "Minus",
+        "Multiply",
+        "Divide"
+      ],
+      "default": "None"
+    },
+    "customValue": {
+      "type": "decimal"
+    },
+    "operatorTrigger": {
+      "type": "enumeration",
+      "enum": [
+        "None",
+        "Plus",
+        "Minus",
+        "Multiply",
+        "Divide"
+      ],
+      "default": "None"
+    },
+    "trigger": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::trigger.trigger"
+    }
+  }
+}

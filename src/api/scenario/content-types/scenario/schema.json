@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "scenarios",
+  "info": {
+    "singularName": "scenario",
+    "pluralName": "scenarios",
+    "displayName": "Scenario",
+    "description": "A collection of services to be run."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subject": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "active",
+        "completed"
+      ]
+    },
+    "dialogues": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dialogue.dialogue",
+      "mappedBy": "scenario"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::participant.participant",
+      "inversedBy": "scenarios"
+    },
+    "orchestration": {
+      "type": "json"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Interaction",
+        "Tiered Program",
+        "Profile Calculations",
+        "Backoffice"
+      ]
+    }
+  }
+}

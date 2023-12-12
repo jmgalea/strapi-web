@@ -1,0 +1,49 @@
+{
+  "collectionName": "components_profiles_generate_profiles",
+  "info": {
+    "displayName": "GenerateProfile",
+    "icon": "priceTag",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "string"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Behavioural Patterns",
+        "Risk Assessment",
+        "Engagement Metrics",
+        "Communication Preferences",
+        "Social and Community Interaction",
+        "Transactional Data",
+        "Geographical and Demographic Data",
+        "Tech and Device Preferences",
+        "Feedback and Surveys",
+        "Regulatory and Compliance Data"
+      ]
+    },
+    "location": {
+      "type": "enumeration",
+      "enum": [
+        "profile",
+        "dialogue"
+      ]
+    },
+    "ownership": {
+      "type": "enumeration",
+      "enum": [
+        "system",
+        "manager"
+      ]
+    },
+    "formula": {
+      "displayName": "CreateProfileDiscoveryFormula",
+      "type": "component",
+      "repeatable": true,
+      "component": "core.dynamic-value-calc"
+    }
+  }
+}
