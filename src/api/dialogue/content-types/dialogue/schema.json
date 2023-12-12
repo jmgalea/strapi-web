@@ -15,9 +15,6 @@
     "subject": {
       "type": "string"
     },
-    "subject2": {
-      "type": "string"
-    },
     "status": {
       "type": "enumeration",
       "enum": [
